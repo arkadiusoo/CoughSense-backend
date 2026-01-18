@@ -16,8 +16,15 @@ ALLOWED_CONTENT_TYPES = {
     "audio/mp3",
     "audio/flac",
     "audio/ogg",
+    "audio/webm",
 }
-ALLOWED_EXTENSIONS = {".wav", ".mp3", ".flac", ".ogg"}
+ALLOWED_EXTENSIONS = {
+    ".wav", 
+    ".mp3", 
+    ".flac", 
+    ".ogg", 
+    ".webm"
+}
 MIN_DURATION_SECONDS = 0.2
 MAX_DURATION_SECONDS = 15.0
 
@@ -59,7 +66,8 @@ async def analyze_cough_audio(file: UploadFile) -> dict:
 
 def _validate_upload(file: UploadFile) -> None:
     content_type = (file.content_type or "").lower()
-    if content_type and content_type not in ALLOWED_CONTENT_TYPES:
+    base_content_type = content_type.split(";", 1)[0].strip()
+    if base_content_type and base_content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Unsupported audio format.",
