@@ -7,3 +7,4 @@ torch
 sqlalchemy
 psycopg2-binary
 python-multipart
+ffmpeg-python

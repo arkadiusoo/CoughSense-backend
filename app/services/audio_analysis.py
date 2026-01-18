@@ -7,6 +7,7 @@ from fastapi import HTTPException, UploadFile, status
 
 from app.db.repository import AnalysisRepository
 from app.ml.model import CoughClassifier
+from app.services.audio_conversion import convert_to_wav
 
 
 ALLOWED_CONTENT_TYPES = {
@@ -14,17 +15,9 @@ ALLOWED_CONTENT_TYPES = {
     "audio/x-wav",
     "audio/mpeg",
     "audio/mp3",
-    "audio/flac",
-    "audio/ogg",
     "audio/webm",
 }
-ALLOWED_EXTENSIONS = {
-    ".wav", 
-    ".mp3", 
-    ".flac", 
-    ".ogg", 
-    ".webm"
-}
+ALLOWED_EXTENSIONS = {".wav", ".mp3", ".webm"}
 MIN_DURATION_SECONDS = 0.2
 MAX_DURATION_SECONDS = 15.0
 
@@ -42,7 +35,12 @@ async def analyze_cough_audio(file: UploadFile) -> dict:
             detail="Empty audio payload.",
         )
 
-    y, sr = _load_audio(audio_bytes)
+    wav_bytes = convert_to_wav(
+        audio_bytes,
+        content_type=file.content_type or "",
+        filename=file.filename or "",
+    )
+    y, sr = _load_audio(wav_bytes)
     duration_seconds = float(len(y) / sr)
     _validate_duration(duration_seconds)
 
@@ -53,7 +51,7 @@ async def analyze_cough_audio(file: UploadFile) -> dict:
         prediction=prediction,
         feature_vector_size=int(features.shape[0]),
     )
-
+    print(features)
     return {
         "prediction": {
             "label": prediction.label,
