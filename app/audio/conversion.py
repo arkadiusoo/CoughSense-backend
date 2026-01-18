@@ -1,4 +1,3 @@
-from fastapi import HTTPException, status
 import ffmpeg
 
 
@@ -18,16 +17,10 @@ def convert_to_wav(audio_bytes: bytes, content_type: str, filename: str) -> byte
         )
         stdout, _ = process.communicate(input=audio_bytes)
     except FileNotFoundError as exc:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="ffmpeg is not installed.",
-        ) from exc
+        raise RuntimeError("ffmpeg is not installed.") from exc
 
     if process.returncode != 0 or not stdout:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not decode audio file.",
-        )
+        raise ValueError("Could not decode audio file.")
 
     return stdout
 
