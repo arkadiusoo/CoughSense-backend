@@ -1,12 +1,14 @@
+from datetime import datetime
+from typing import Optional
+
 from pydantic import BaseModel, Field
 
 
 class Prediction(BaseModel):
     label: str = Field(..., example="cough_positive")
-    confidence: float = Field(..., ge=0.0, le=1.0, example=0.82)
+    confidence: Optional[float] = Field(None, ge=0.0, le=1.0, example=0.82)
 
 
 class AnalysisResponse(BaseModel):
-    prediction: Prediction
-    duration_seconds: float = Field(..., gt=0.0, example=2.35)
-    feature_vector_size: int = Field(..., gt=0, example=58)
+    result: Prediction
+    analyzed_at: datetime = Field(..., example="2024-01-01T12:00:00Z")

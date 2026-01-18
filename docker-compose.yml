@@ -1,0 +1,17 @@
+services:
+  db:
+    image: postgres:16
+    container_name: coughsense-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: coughsense
+      POSTGRES_USER: coughsense
+      POSTGRES_PASSWORD: coughsense
+    ports:
+      - "5432:5432"
+    volumes:
+      - coughsense_db_data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+
+volumes:
+  coughsense_db_data:

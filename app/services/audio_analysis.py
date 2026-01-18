@@ -1,3 +1,5 @@
+import time
+
 from fastapi import HTTPException, UploadFile, status
 
 from app.audio.conversion import convert_to_wav
@@ -33,6 +35,7 @@ async def analyze_cough_audio(file: UploadFile) -> dict:
             detail="Empty audio payload.",
         )
 
+    start_time = time.perf_counter()
     try:
         wav_bytes = convert_to_wav(
             audio_bytes,
@@ -58,18 +61,20 @@ async def analyze_cough_audio(file: UploadFile) -> dict:
 
     features = extract_features(signal)
     prediction = classifier.predict(features)
-    repository.save_analysis(
-        duration_seconds=signal.duration_seconds,
-        prediction=prediction,
-        feature_vector_size=int(features.shape[0]),
+    processing_time_ms = int((time.perf_counter() - start_time) * 1000)
+    saved_analysis = repository.save_analysis(
+        result_label=prediction.label,
+        result_confidence=prediction.confidence,
+        recording_duration_seconds=signal.duration_seconds,
+        processing_time_ms=processing_time_ms,
+        model_ai=classifier.model_name,
     )
     return {
-        "prediction": {
+        "result": {
             "label": prediction.label,
             "confidence": prediction.confidence,
         },
-        "duration_seconds": signal.duration_seconds,
-        "feature_vector_size": int(features.shape[0]),
+        "analyzed_at": saved_analysis.analyzed_at,
     }
 
 

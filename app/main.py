@@ -2,6 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes import router as api_router
+from app.db.base import Base
+from app.db.session import engine
+import app.db.models  # noqa: F401
 
 
 app = FastAPI(title="CoughSense API", version="0.1.0")
@@ -13,3 +16,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(api_router)
+
+
+@app.on_event("startup")
+def create_tables() -> None:
+    Base.metadata.create_all(bind=engine)
