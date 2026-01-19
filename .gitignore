@@ -40,5 +40,3 @@ checkpoints/
 *.pt
 *.pth
 
-# Scripts for data preprocessing 
-scripts/
