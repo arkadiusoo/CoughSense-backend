@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import logging
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Sequence
@@ -48,12 +49,35 @@ def build_feature_dataset(config: DatasetConfig) -> FeatureDataset:
     labels_list: list[int] = []
     file_paths: list[Path] = []
 
+    skipped_unknown = 0
+    skipped_warning = 0
+    skipped_error = 0
+
     for idx, sample in enumerate(samples, start=1):
         if sample.label not in label_to_index:
             logger.warning("Unknown label '%s' in %s", sample.label, sample.audio_path)
+            skipped_unknown += 1
             continue
-        signal = _load_audio_signal(sample.audio_path)
-        features = extract_features(signal)
+        try:
+            signal = _load_audio_signal(sample.audio_path)
+        except Exception as exc:
+            logger.warning("Skipping %s: %s", sample.audio_path, exc)
+            skipped_error += 1
+            continue
+
+        try:
+            with warnings.catch_warnings(record=True) as caught:
+                warnings.simplefilter("always")
+                features = extract_features(signal)
+        except Exception as exc:
+            logger.warning("Skipping %s: %s", sample.audio_path, exc)
+            skipped_error += 1
+            continue
+
+        if _has_empty_tuning_warning(caught):
+            logger.warning("Skipping %s due to empty tuning warning.", sample.audio_path)
+            skipped_warning += 1
+            continue
         features_list.append(features)
         labels_list.append(label_to_index[sample.label])
         file_paths.append(sample.audio_path)
@@ -62,6 +86,15 @@ def build_feature_dataset(config: DatasetConfig) -> FeatureDataset:
 
     if not features_list:
         raise ValueError("No valid samples after label filtering.")
+
+    print(
+        f"[{config.name}] Feature extraction done. Kept {len(features_list)}/{total} files."
+    )
+    if skipped_unknown or skipped_warning or skipped_error:
+        print(
+            f"[{config.name}] Skipped: unknown_label={skipped_unknown}, "
+            f"empty_tuning_warning={skipped_warning}, errors={skipped_error}"
+        )
 
     feature_matrix = np.stack(features_list).astype(np.float32)
     label_array = np.asarray(labels_list, dtype=np.int64)
@@ -109,6 +142,14 @@ def _load_audio_signal(path: Path) -> AudioSignal:
     if y.size == 0 or sr is None:
         raise ValueError(f"Audio data is empty: {path}")
     return AudioSignal(samples=y, sample_rate=int(sr))
+
+
+def _has_empty_tuning_warning(warnings_list: list[warnings.WarningMessage]) -> bool:
+    for warning in warnings_list:
+        message = str(warning.message)
+        if "Trying to estimate tuning from empty frequency set" in message:
+            return True
+    return False
 
 
 def stratified_split(
