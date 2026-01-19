@@ -38,6 +38,9 @@ def build_feature_dataset(config: DatasetConfig) -> FeatureDataset:
     if not samples:
         raise ValueError(f"No samples found in {config.data_dir}.")
 
+    total = len(samples)
+    print(f"[{config.name}] Extracting features for {total} files...")
+
     label_to_index = {label: idx for idx, label in enumerate(config.labels)}
     index_to_label = {idx: label for label, idx in label_to_index.items()}
 
@@ -45,7 +48,7 @@ def build_feature_dataset(config: DatasetConfig) -> FeatureDataset:
     labels_list: list[int] = []
     file_paths: list[Path] = []
 
-    for sample in samples:
+    for idx, sample in enumerate(samples, start=1):
         if sample.label not in label_to_index:
             logger.warning("Unknown label '%s' in %s", sample.label, sample.audio_path)
             continue
@@ -54,6 +57,8 @@ def build_feature_dataset(config: DatasetConfig) -> FeatureDataset:
         features_list.append(features)
         labels_list.append(label_to_index[sample.label])
         file_paths.append(sample.audio_path)
+        if idx == 1 or idx % 500 == 0 or idx == total:
+            print(f"[{config.name}] Features {idx}/{total}")
 
     if not features_list:
         raise ValueError("No valid samples after label filtering.")

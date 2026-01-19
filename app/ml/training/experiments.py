@@ -26,6 +26,7 @@ def run_experiments(
     splits: Sequence[ExperimentSplit],
     output_dir: Path,
 ) -> dict:
+    print(f"[{dataset_config.name}] Starting experiments")
     output_dir.mkdir(parents=True, exist_ok=True)
     dataset = build_feature_dataset(dataset_config)
 
@@ -112,6 +113,7 @@ def run_experiments(
 
     _update_best_models_registry(output_dir.parent, dataset_config.name, summary)
 
+    print(f"[{dataset_config.name}] Finished experiments")
     return {
         "summary_path": str(summary_path),
         "summary_csv_path": str(summary_csv_path),
@@ -193,6 +195,7 @@ def _train_and_evaluate_split(
         progress_callback=on_progress,
     )
 
+    print(f"[{dataset_config.name} {split.tag}] Evaluating model")
     y_true, y_pred = evaluate(model, test_loader, device)
     metrics = classification_metrics(
         y_true,
