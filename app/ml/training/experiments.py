@@ -32,7 +32,11 @@ def run_experiments(
     results: list[dict] = []
     summary_rows: list[dict] = []
 
-    for split in splits:
+    for idx, split in enumerate(splits, start=1):
+        print(
+            f"[{dataset_config.name}] Split {idx}/{len(splits)} "
+            f"({split.train_ratio:.0%}/{split.test_ratio:.0%})"
+        )
         split_seed = training_config.base_seed + split.seed
         set_seed(split_seed)
 
@@ -172,6 +176,13 @@ def _train_and_evaluate_split(
         weight_decay=training_config.weight_decay,
     )
 
+    def on_progress(epoch: int, total_epochs: int, loss: float, acc: float) -> None:
+        print(
+            f"[{dataset_config.name} {split.tag}] "
+            f"Epoch {epoch}/{total_epochs} "
+            f"loss={loss:.4f} acc={acc:.4f}"
+        )
+
     history = train_model(
         model=model,
         train_loader=train_loader,
@@ -179,6 +190,7 @@ def _train_and_evaluate_split(
         optimizer=optimizer,
         device=device,
         epochs=training_config.epochs,
+        progress_callback=on_progress,
     )
 
     y_true, y_pred = evaluate(model, test_loader, device)

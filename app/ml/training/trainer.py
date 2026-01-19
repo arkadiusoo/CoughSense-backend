@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Iterable
+from typing import Callable
 
 import numpy as np
 import torch
@@ -15,6 +15,7 @@ def train_model(
     optimizer: torch.optim.Optimizer,
     device: torch.device,
     epochs: int,
+    progress_callback: Callable[[int, int, float, float], None] | None = None,
 ) -> list[dict[str, float]]:
     history: list[dict[str, float]] = []
     model.to(device)
@@ -43,6 +44,8 @@ def train_model(
         epoch_loss = running_loss / total if total else 0.0
         epoch_acc = correct / total if total else 0.0
         history.append({"loss": epoch_loss, "accuracy": epoch_acc})
+        if progress_callback:
+            progress_callback(epoch + 1, epochs, epoch_loss, epoch_acc)
 
     return history
 
