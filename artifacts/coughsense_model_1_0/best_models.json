@@ -1,0 +1,27 @@
+{
+  "model_name": "CoughSenseModel_1-0",
+  "updated_at": "2026-01-20T00:09:14.240566+00:00",
+  "submodels": {
+    "signal_type": {
+      "split_tag": "70_30",
+      "checkpoint_path": "signal_type/70_30/model.pt",
+      "label_map_path": "signal_type/70_30/label_map.json",
+      "model_config_path": "signal_type/70_30/model_config.json",
+      "metrics_path": "signal_type/70_30/metrics.json"
+    },
+    "cough_classifier": {
+      "split_tag": "90_10",
+      "checkpoint_path": "cough_classifier/90_10/model.pt",
+      "label_map_path": "cough_classifier/90_10/label_map.json",
+      "model_config_path": "cough_classifier/90_10/model_config.json",
+      "metrics_path": "cough_classifier/90_10/metrics.json"
+    },
+    "breath_classifier": {
+      "split_tag": "60_40",
+      "checkpoint_path": "breath_classifier/60_40/model.pt",
+      "label_map_path": "breath_classifier/60_40/label_map.json",
+      "model_config_path": "breath_classifier/60_40/model_config.json",
+      "metrics_path": "breath_classifier/60_40/metrics.json"
+    }
+  }
+}
