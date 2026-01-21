@@ -1,0 +1,78 @@
+{
+  "model": "cough_classifier",
+  "split": {
+    "train_ratio": 0.8,
+    "test_ratio": 0.2,
+    "seed": 202,
+    "tag": "80_20"
+  },
+  "seed": 244,
+  "label_map": [
+    "COVID-19",
+    "healthy",
+    "symptomatic"
+  ],
+  "model_config": {
+    "input_features": 58,
+    "num_classes": 3,
+    "dropout": 0.3
+  },
+  "metrics": {
+    "accuracy": 0.289108299907436,
+    "precision_macro": 0.37997189321796737,
+    "recall_macro": 0.35045767459931376,
+    "f1_macro": 0.22259936755707196,
+    "per_class": {
+      "COVID-19": {
+        "precision": 0.18518518518518517,
+        "recall": 0.04329004329004329,
+        "f1": 0.07017543859649121
+      },
+      "healthy": {
+        "precision": 0.7913446676970634,
+        "recall": 0.2053750501403931,
+        "f1": 0.32611464968152865
+      },
+      "symptomatic": {
+        "precision": 0.16338582677165353,
+        "recall": 0.8027079303675049,
+        "f1": 0.27150801439319594
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "COVID-19",
+        "healthy",
+        "symptomatic"
+      ],
+      "matrix": [
+        [
+          10,
+          44,
+          177
+        ],
+        [
+          33,
+          512,
+          1948
+        ],
+        [
+          11,
+          91,
+          415
+        ]
+      ]
+    }
+  },
+  "train_summary": {
+    "num_samples": 12968,
+    "class_weights": [
+      4.678210735321045,
+      0.4333934783935547,
+      2.088244676589966
+    ]
+  },
+  "test_summary": {
+    "num_samples": 3241
+  }
+}

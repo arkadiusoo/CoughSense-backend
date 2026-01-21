@@ -1,0 +1,5 @@
+{
+  "input_features": 58,
+  "num_classes": 8,
+  "dropout": 0.3
+}

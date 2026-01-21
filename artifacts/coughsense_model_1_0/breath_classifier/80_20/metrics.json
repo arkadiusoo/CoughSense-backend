@@ -1,0 +1,183 @@
+{
+  "model": "breath_classifier",
+  "split": {
+    "train_ratio": 0.8,
+    "test_ratio": 0.2,
+    "seed": 202,
+    "tag": "80_20"
+  },
+  "seed": 244,
+  "label_map": [
+    "Healthy",
+    "URTI",
+    "Asthma",
+    "COPD",
+    "LRTI",
+    "Bronchiectasis",
+    "Pneumonia",
+    "Bronchiolitis"
+  ],
+  "model_config": {
+    "input_features": 58,
+    "num_classes": 8,
+    "dropout": 0.3
+  },
+  "metrics": {
+    "accuracy": 0.8304093567251462,
+    "precision_macro": 0.23163015042511445,
+    "recall_macro": 0.30075503355704697,
+    "f1_macro": 0.24665178571428573,
+    "per_class": {
+      "Healthy": {
+        "precision": 0.2,
+        "recall": 0.3333333333333333,
+        "f1": 0.25
+      },
+      "URTI": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "Asthma": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "COPD": {
+        "precision": 0.9712230215827338,
+        "recall": 0.9060402684563759,
+        "f1": 0.9375
+      },
+      "LRTI": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "Bronchiectasis": {
+        "precision": 0.18181818181818182,
+        "recall": 0.6666666666666666,
+        "f1": 0.28571428571428575
+      },
+      "Pneumonia": {
+        "precision": 0.5,
+        "recall": 0.5,
+        "f1": 0.5
+      },
+      "Bronchiolitis": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0
+      }
+    },
+    "confusion_matrix": {
+      "labels": [
+        "Healthy",
+        "URTI",
+        "Asthma",
+        "COPD",
+        "LRTI",
+        "Bronchiectasis",
+        "Pneumonia",
+        "Bronchiolitis"
+      ],
+      "matrix": [
+        [
+          2,
+          0,
+          0,
+          2,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          2,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          3,
+          3,
+          0,
+          135,
+          0,
+          7,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          2,
+          0,
+          0,
+          3,
+          0
+        ],
+        [
+          2,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ]
+    }
+  },
+  "train_summary": {
+    "num_samples": 683,
+    "class_weights": [
+      3.8806817531585693,
+      5.3359375,
+      0.0,
+      0.14300669729709625,
+      85.375,
+      6.567307472229004,
+      3.5572917461395264,
+      8.537500381469727
+    ]
+  },
+  "test_summary": {
+    "num_samples": 171
+  }
+}
