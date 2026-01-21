@@ -72,7 +72,7 @@ async def analyze_cough_audio(file: UploadFile) -> dict:
     return {
         "result": {
             "label": prediction.label,
-            "confidence": prediction.confidence,
+            # "confidence": prediction.confidence,
         },
         "analyzed_at": saved_analysis.analyzed_at,
     }

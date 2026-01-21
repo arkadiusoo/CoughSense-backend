@@ -13,6 +13,7 @@ class AnalysisRepository:
         processing_time_ms: int,
         model_ai: str,
     ) -> AnalysisResult:
+        print("Saving analysis to the database...")
         analysis = AnalysisResult(
             result_label=result_label,
             result_confidence=result_confidence,
