@@ -19,3 +19,11 @@ router = APIRouter(prefix="/api", tags=["analysis"])
 )
 async def analyze_audio(file: UploadFile = File(...)) -> AnalysisResponse:
     return await analyze_cough_audio(file)
+
+@router.get(
+    "/health",
+    summary="Health check endpoint",
+    description="A simple endpoint to check if the API is running.",
+)
+async def health_check():
+    return {"status": "ok"}
