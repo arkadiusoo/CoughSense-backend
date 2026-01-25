@@ -3,7 +3,9 @@ uvicorn
 numpy
 scipy
 librosa
+ffmpeg-python
 torch
 sqlalchemy
 psycopg2-binary
 python-multipart
+pytest
