@@ -23,8 +23,8 @@ TEST_OUTPUT_DIR = Path(
     "/Volumes/SSD500GB/1.ssd_files/dane_do_inzynierki/training_data/test_spectograms"
 )
 TARGET_DURATIONS = {
-    DATA_DIRS[0]: 90.0,  # coughVSbreath
-    DATA_DIRS[1]: 90.0,  # labeled_breath
+    DATA_DIRS[0]: 20.0,  # coughVSbreath
+    DATA_DIRS[1]: 20.0,  # labeled_breath
     DATA_DIRS[2]: 10.0,  # labeled_cough
 }
 DEFAULT_SR = 16000
