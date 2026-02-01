@@ -12,6 +12,8 @@ COUGH_SRC = Path(
 DEST_DIR = Path(
     "/Volumes/SSD500GB/1.ssd_files/dane_do_inzynierki/training_data/labeled_cough"
 )
+LABEL_FIELDS = ("expert_labels_1", "expert_labels_2", "expert_labels_3")
+TARGET_DIAGNOSES = {"COVID-19", "healthy_cough"}
 
 
 def find_wav_json_pairs(root: Path) -> list[tuple[Path, Path]]:
@@ -25,8 +27,8 @@ def find_wav_json_pairs(root: Path) -> list[tuple[Path, Path]]:
     return sorted(pairs, key=lambda item: item[0].name)
 
 
-def safe_status_for_filename(status: str) -> str:
-    cleaned = re.sub(r"[^A-Za-z0-9]+", "-", status.strip())
+def safe_label_for_filename(label: str) -> str:
+    cleaned = re.sub(r"[^A-Za-z0-9]+", "-", label.strip())
     return cleaned.strip("-") or "unknown"
 
 
@@ -38,6 +40,34 @@ def next_index(dest: Path, status_slug: str) -> int:
         if match:
             max_idx = max(max_idx, int(match.group(1)))
     return max_idx + 1
+
+
+def extract_diagnoses(value: object) -> set[str]:
+    diagnoses: set[str] = set()
+    if isinstance(value, dict):
+        diagnosis = value.get("diagnosis")
+        if diagnosis is not None:
+            diagnoses.add(str(diagnosis))
+        return diagnoses
+
+    if isinstance(value, list):
+        for item in value:
+            if isinstance(item, dict) and "diagnosis" in item:
+                diagnoses.add(str(item["diagnosis"]))
+        return diagnoses
+
+    return diagnoses
+
+
+def pick_target_diagnosis(data: dict) -> str | None:
+    for label in LABEL_FIELDS:
+        if label not in data:
+            continue
+        diagnoses = extract_diagnoses(data[label])
+        matched = diagnoses & TARGET_DIAGNOSES
+        if matched:
+            return sorted(matched)[0]
+    return None
 
 
 def main() -> None:
@@ -56,27 +86,36 @@ def main() -> None:
             skipped += 1
             continue
 
-        if not isinstance(data, dict) or "status" not in data:
+        if not isinstance(data, dict):
             skipped += 1
             continue
 
-        status_value = str(data["status"])
-        status_slug = safe_status_for_filename(status_value)
-        if status_slug not in counters:
-            counters[status_slug] = next_index(DEST_DIR, status_slug)
-        index = counters[status_slug]
-        stem = f"cough_{status_slug}_{index}"
+        diagnosis_value = pick_target_diagnosis(data)
+        if diagnosis_value is None:
+            skipped += 1
+            continue
+
+        diagnosis_slug = safe_label_for_filename(diagnosis_value)
+        if diagnosis_slug not in counters:
+            counters[diagnosis_slug] = next_index(DEST_DIR, diagnosis_slug)
+        index = counters[diagnosis_slug]
+        stem = f"cough_{diagnosis_slug}_{index}"
         dst_wav = DEST_DIR / f"{stem}.wav"
         dst_json = DEST_DIR / f"{stem}.json"
 
         shutil.copy2(wav_path, dst_wav)
         with dst_json.open("w", encoding="utf-8") as handle:
-            json.dump({"status": data["status"]}, handle)
+            json.dump({"diagnosis": diagnosis_value}, handle)
 
-        counters[status_slug] = index + 1
+        counters[diagnosis_slug] = index + 1
         copied += 1
 
-    print(f"Copied {copied} pairs. Skipped {skipped} pairs.")
+    diagnoses = ", ".join(sorted(TARGET_DIAGNOSES))
+    print(
+        "Copied "
+        f"{copied} pairs with expert diagnosis in [{diagnoses}]. "
+        f"Skipped {skipped} pairs."
+    )
 
 
 if __name__ == "__main__":
