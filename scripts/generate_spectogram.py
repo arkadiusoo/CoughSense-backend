@@ -22,6 +22,12 @@ DATA_DIRS = [
 TEST_OUTPUT_DIR = Path(
     "/Volumes/SSD500GB/1.ssd_files/dane_do_inzynierki/training_data/test_spectograms"
 )
+TARGET_DURATIONS = {
+    DATA_DIRS[0]: 90.0,  # coughVSbreath
+    DATA_DIRS[1]: 90.0,  # labeled_breath
+    DATA_DIRS[2]: 10.0,  # labeled_cough
+}
+DEFAULT_SR = 16000
 
 
 def parse_args() -> argparse.Namespace:
@@ -41,6 +47,12 @@ def parse_args() -> argparse.Namespace:
         help="Use random 10 files per directory (requires --test).",
     )
     parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--sr",
+        type=int,
+        default=DEFAULT_SR,
+        help="Target sampling rate for all files.",
+    )
     parser.add_argument("--n-mels", type=int, default=128)
     parser.add_argument("--n-fft", type=int, default=2048)
     parser.add_argument("--hop-length", type=int, default=512)
@@ -61,10 +73,26 @@ def select_files(files: list[Path], use_test: bool, use_random: bool, seed: int)
     return files[:limit]
 
 
+def pad_or_trim(audio: np.ndarray, target_len: int) -> np.ndarray:
+    if audio.size == target_len:
+        return audio
+    if audio.size > target_len:
+        return audio[:target_len]
+    pad_width = target_len - audio.size
+    return np.pad(audio, (0, pad_width), mode="constant")
+
+
 def compute_mel_spectrogram(
-    wav_path: Path, n_mels: int, n_fft: int, hop_length: int
+    wav_path: Path,
+    n_mels: int,
+    n_fft: int,
+    hop_length: int,
+    sr: int,
+    target_duration: float,
 ) -> np.ndarray:
-    audio, sr = librosa.load(wav_path, sr=None, mono=True)
+    audio, _ = librosa.load(wav_path, sr=sr, mono=True)
+    target_len = int(round(sr * target_duration))
+    audio = pad_or_trim(audio, target_len)
     mel = librosa.feature.melspectrogram(
         y=audio,
         sr=sr,
@@ -102,9 +130,12 @@ def main() -> None:
     for root in DATA_DIRS:
         if not root.exists():
             raise FileNotFoundError(f"Missing data directory: {root}")
+        if root not in TARGET_DURATIONS:
+            raise KeyError(f"Missing target duration for {root}")
 
         wavs = find_wavs(root)
         selected = select_files(wavs, args.test, args.random, args.seed)
+        target_duration = TARGET_DURATIONS[root]
 
         created = 0
         for wav_path in selected:
@@ -113,6 +144,8 @@ def main() -> None:
                 n_mels=args.n_mels,
                 n_fft=args.n_fft,
                 hop_length=args.hop_length,
+                sr=args.sr,
+                target_duration=target_duration,
             )
             if args.test:
                 out_path = TEST_OUTPUT_DIR / wav_path.with_suffix(".png").name
