@@ -9,3 +9,5 @@ sqlalchemy
 psycopg2-binary
 python-multipart
 pytest
+scikit-learn
+pillow
