@@ -50,7 +50,9 @@ def run_submodel_experiments(
     knn_dir.mkdir(parents=True, exist_ok=True)
     fusion_dir.mkdir(parents=True, exist_ok=True)
 
+    print(f"[{dataset_config.name}] Loading sample records...")
     records = build_sample_records(dataset_config)
+    print(f"[{dataset_config.name}] Loaded {len(records)} samples.")
     label_map = (
         list(dataset_config.labels)
         if dataset_config.labels
@@ -61,6 +63,7 @@ def run_submodel_experiments(
     label_to_index = {label: idx for idx, label in enumerate(label_map)}
     labels_array = np.asarray([label_to_index[r.label] for r in records], dtype=np.int64)
 
+    print(f"[{dataset_config.name}] Building train/val/test splits...")
     set_seed(experiment_config.split_seed)
     split_indices = stratified_split_three(
         labels_array,
@@ -76,12 +79,14 @@ def run_submodel_experiments(
     split_payload = _serialize_split_indices(records, split_indices)
     write_json(run_dir / "splits.json", split_payload)
 
+    print(f"[{dataset_config.name}] Loading feature vectors for KNN...")
     feature_matrix = build_feature_matrix(
         records,
         label_to_index,
         dataset_config.features_key,
     )
     feature_matrix = _align_feature_matrix(records, feature_matrix)
+    print(f"[{dataset_config.name}] Feature matrix shape: {feature_matrix.features.shape}.")
 
     run_metadata = {
         "model": dataset_config.name,
@@ -92,6 +97,7 @@ def run_submodel_experiments(
     }
     write_json(run_dir / "run_config.json", run_metadata)
 
+    print(f"[{dataset_config.name}] Starting CNN experiments...")
     cnn_results = _run_cnn_experiments(
         dataset_config,
         experiment_config,
@@ -103,6 +109,7 @@ def run_submodel_experiments(
         label_to_index,
     )
 
+    print(f"[{dataset_config.name}] Starting KNN experiments...")
     knn_results = _run_knn_experiments(
         dataset_config,
         experiment_config,
@@ -112,6 +119,7 @@ def run_submodel_experiments(
         label_map,
     )
 
+    print(f"[{dataset_config.name}] Starting fusion experiments...")
     fusion_results = _run_fusion_experiments(
         experiment_config,
         labels_array,
@@ -121,6 +129,7 @@ def run_submodel_experiments(
         fusion_dir,
     )
 
+    print(f"[{dataset_config.name}] Selecting best configuration...")
     best = _select_best_fusion(
         fusion_results,
         experiment_config.selection_metric,
@@ -145,6 +154,7 @@ def run_submodel_experiments(
     write_json(run_dir / "summary.json", summary)
     _update_results_registry(results_root, dataset_config.name, best_summary)
 
+    print(f"[{dataset_config.name}] Done.")
     return summary
 
 
@@ -193,12 +203,24 @@ def _run_cnn_experiments(
         num_workers=experiment_config.training.num_workers,
     )
 
+    total_runs = (
+        len(experiment_config.cnn_grid.conv_channels_options)
+        * len(experiment_config.cnn_grid.kernel_sizes)
+        * len(experiment_config.cnn_grid.dropouts)
+        * len(experiment_config.cnn_grid.dense_units)
+    )
+    print(f"[{dataset_config.name}] CNN grid size: {total_runs} runs.")
     run_id = 0
     for conv_channels in experiment_config.cnn_grid.conv_channels_options:
         for kernel_size in experiment_config.cnn_grid.kernel_sizes:
             for dropout in experiment_config.cnn_grid.dropouts:
                 for dense_units in experiment_config.cnn_grid.dense_units:
                     run_id += 1
+                    print(
+                        f"[{dataset_config.name}] CNN run {run_id}/{total_runs} "
+                        f"(channels={conv_channels}, kernel={kernel_size}, "
+                        f"dropout={dropout}, dense={dense_units})"
+                    )
                     cnn_config = CNNConfig(
                         input_channels=3,
                         num_classes=len(label_map),
@@ -330,12 +352,23 @@ def _run_knn_experiments(
     x_test = feature_matrix.features[split_indices.test]
     y_test = feature_matrix.labels[split_indices.test]
 
+    total_runs = (
+        len(experiment_config.knn_grid.neighbors)
+        * len(experiment_config.knn_grid.metrics)
+        * len(experiment_config.knn_grid.weights)
+        * len(experiment_config.knn_grid.p_values)
+    )
+    print(f"[{dataset_config.name}] KNN grid size: {total_runs} runs.")
     run_id = 0
     for neighbors in experiment_config.knn_grid.neighbors:
         for metric in experiment_config.knn_grid.metrics:
             for weights in experiment_config.knn_grid.weights:
                 for p_value in experiment_config.knn_grid.p_values:
                     run_id += 1
+                    print(
+                        f"[{dataset_config.name}] KNN run {run_id}/{total_runs} "
+                        f"(k={neighbors}, metric={metric}, weights={weights}, p={p_value})"
+                    )
                     knn_config = KNNConfig(
                         n_neighbors=neighbors,
                         metric=metric,
@@ -432,12 +465,20 @@ def _run_fusion_experiments(
     y_test = labels_array[split_indices.test]
 
     results: list[dict[str, Any]] = []
+    total_runs = (
+        len(cnn_results)
+        * len(knn_results)
+        * len(experiment_config.fusion.weight_pairs)
+    )
+    print(f"Fusion grid size: {total_runs} runs.")
     run_id = 0
 
     for cnn in cnn_results:
         for knn in knn_results:
             for weights_pair in experiment_config.fusion.weight_pairs:
                 run_id += 1
+                if total_runs <= 50 or run_id % 50 == 0 or run_id == total_runs:
+                    print(f"Fusion run {run_id}/{total_runs} (cnn={cnn['run_id']}, knn={knn['run_id']})")
                 weights = FusionWeights(*weights_pair)
                 val_probs = fuse_probabilities(cnn["val_probs"], knn["val_probs"], weights)
                 test_probs = fuse_probabilities(
@@ -663,6 +704,11 @@ def _train_cnn(
                 "val_loss": val_loss,
                 "val_accuracy": val_acc,
             }
+        )
+        print(
+            f"  Epoch {epoch}/{experiment_config.training.max_epochs} "
+            f"train_loss={train_loss:.4f} val_loss={val_loss:.4f} "
+            f"train_acc={train_acc:.4f} val_acc={val_acc:.4f}"
         )
 
         if val_loss < best_val_loss - experiment_config.training.early_stopping_min_delta:
