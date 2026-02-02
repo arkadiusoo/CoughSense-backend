@@ -51,7 +51,13 @@ def run_submodel_experiments(
     fusion_dir.mkdir(parents=True, exist_ok=True)
 
     records = build_sample_records(dataset_config)
-    label_map = list(dataset_config.labels)
+    label_map = (
+        list(dataset_config.labels)
+        if dataset_config.labels
+        else _infer_label_map(records)
+    )
+    if not label_map:
+        raise ValueError("Label map is empty. Check dataset labels.")
     label_to_index = {label: idx for idx, label in enumerate(label_map)}
     labels_array = np.asarray([label_to_index[r.label] for r in records], dtype=np.int64)
 
@@ -81,6 +87,7 @@ def run_submodel_experiments(
         "model": dataset_config.name,
         "created_at": datetime.now(timezone.utc).isoformat(),
         "dataset_config": _serialize_dataset_config(dataset_config),
+        "label_map": label_map,
         "experiment_config": json.loads(json.dumps(asdict(experiment_config))),
     }
     write_json(run_dir / "run_config.json", run_metadata)
@@ -92,6 +99,8 @@ def run_submodel_experiments(
         labels_array,
         split_indices,
         cnn_dir,
+        label_map,
+        label_to_index,
     )
 
     knn_results = _run_knn_experiments(
@@ -100,6 +109,7 @@ def run_submodel_experiments(
         feature_matrix,
         split_indices,
         knn_dir,
+        label_map,
     )
 
     fusion_results = _run_fusion_experiments(
@@ -145,10 +155,10 @@ def _run_cnn_experiments(
     labels_array: np.ndarray,
     split_indices: SplitIndices,
     output_dir: Path,
+    label_map: list[str],
+    label_to_index: dict[str, int],
 ) -> list[dict[str, Any]]:
     image_config = ImageConfig(image_size=experiment_config.cnn_grid.image_size)
-    label_map = list(dataset_config.labels)
-    label_to_index = {label: idx for idx, label in enumerate(label_map)}
     device = select_device(experiment_config.training.device)
 
     results: list[dict[str, Any]] = []
@@ -308,8 +318,8 @@ def _run_knn_experiments(
     feature_matrix: FeatureMatrix,
     split_indices: SplitIndices,
     output_dir: Path,
+    label_map: list[str],
 ) -> list[dict[str, Any]]:
-    label_map = list(dataset_config.labels)
     results: list[dict[str, Any]] = []
     summary_rows: list[dict[str, Any]] = []
 
@@ -552,13 +562,24 @@ def _serialize_dataset_config(config: DatasetConfig) -> dict[str, Any]:
         "features_dir": str(config.features_dir),
         "label_dir": str(config.label_dir) if config.label_dir else None,
         "label_key": config.label_key,
-        "labels": list(config.labels),
+        "labels": list(config.labels) if config.labels else None,
         "image_extensions": list(config.image_extensions),
         "features_suffix": config.features_suffix,
         "label_suffix": config.label_suffix,
         "features_key": config.features_key,
         "require_both_modalities": config.require_both_modalities,
     }
+
+
+def _infer_label_map(records: list[SampleRecord]) -> list[str]:
+    seen: set[str] = set()
+    label_map: list[str] = []
+    for record in records:
+        if record.label in seen:
+            continue
+        seen.add(record.label)
+        label_map.append(record.label)
+    return label_map
 
 
 def _serialize_split_indices(

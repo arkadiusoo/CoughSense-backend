@@ -5,8 +5,8 @@ from pathlib import Path
 from ml_2.utils.data import DatasetConfig
 
 
-LABELS = ("COVID-19", "healthy", "symptomatic")
-LABEL_KEY = "status"
+LABELS = None
+LABEL_KEY = "diagnosis"
 
 
 def build_dataset_config(data_dir: Path) -> DatasetConfig:

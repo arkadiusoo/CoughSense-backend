@@ -18,7 +18,7 @@ class DatasetConfig:
     features_dir: Path
     label_dir: Path | None
     label_key: str
-    labels: Sequence[str]
+    labels: Sequence[str] | None
     image_extensions: Sequence[str] = (".png", ".jpg", ".jpeg")
     features_suffix: str = ".features.json"
     label_suffix: str = ".json"
@@ -44,7 +44,7 @@ class FeatureMatrix:
 
 
 def build_sample_records(config: DatasetConfig) -> list[SampleRecord]:
-    label_to_index = {label: idx for idx, label in enumerate(config.labels)}
+    label_set = set(config.labels) if config.labels else None
     images = _collect_images(config.image_dir, config.image_extensions)
     features = _collect_features(config.features_dir, config.features_suffix)
 
@@ -70,7 +70,7 @@ def build_sample_records(config: DatasetConfig) -> list[SampleRecord]:
         if label is None:
             skipped_missing_label += 1
             continue
-        if label not in label_to_index:
+        if label_set is not None and label not in label_set:
             skipped_unknown += 1
             logger.warning("Unknown label '%s' in %s", label, label_path)
             continue
