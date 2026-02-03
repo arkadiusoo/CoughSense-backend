@@ -1,0 +1,296 @@
+{
+  "model": "breath_classifier",
+  "run_id": 16,
+  "config": {
+    "n_neighbors": 5,
+    "metric": "minkowski",
+    "weights": "uniform",
+    "p": 2
+  },
+  "metrics": {
+    "val": {
+      "accuracy": 0.8832116788321168,
+      "precision_macro": 0.27140748031496065,
+      "recall_macro": 0.23539915966386557,
+      "f1_macro": 0.24142228029423152,
+      "per_class": {
+        "Healthy": {
+          "precision": 0.5,
+          "recall": 0.4,
+          "f1": 0.4444444444444445
+        },
+        "URTI": {
+          "precision": 0.25,
+          "recall": 0.3333333333333333,
+          "f1": 0.28571428571428575
+        },
+        "Asthma": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "COPD": {
+          "precision": 0.9212598425196851,
+          "recall": 0.9831932773109243,
+          "f1": 0.9512195121951219
+        },
+        "LRTI": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "Bronchiectasis": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "Pneumonia": {
+          "precision": 0.5,
+          "recall": 0.16666666666666666,
+          "f1": 0.25
+        },
+        "Bronchiolitis": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "Healthy",
+          "URTI",
+          "Asthma",
+          "COPD",
+          "LRTI",
+          "Bronchiectasis",
+          "Pneumonia",
+          "Bronchiolitis"
+        ],
+        "matrix": [
+          [
+            2,
+            1,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            117,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            1,
+            0,
+            4,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    },
+    "test": {
+      "accuracy": 0.9057971014492754,
+      "precision_macro": 0.4167011019283746,
+      "recall_macro": 0.3687324929971989,
+      "f1_macro": 0.36893696581196583,
+      "per_class": {
+        "Healthy": {
+          "precision": 0.5,
+          "recall": 0.8,
+          "f1": 0.6153846153846154
+        },
+        "URTI": {
+          "precision": 0.2,
+          "recall": 0.3333333333333333,
+          "f1": 0.25
+        },
+        "Asthma": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "COPD": {
+          "precision": 0.9669421487603306,
+          "recall": 0.9831932773109243,
+          "f1": 0.975
+        },
+        "LRTI": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "Bronchiectasis": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666
+        },
+        "Pneumonia": {
+          "precision": 0.6666666666666666,
+          "recall": 0.3333333333333333,
+          "f1": 0.4444444444444444
+        },
+        "Bronchiolitis": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "Healthy",
+          "URTI",
+          "Asthma",
+          "COPD",
+          "LRTI",
+          "Bronchiectasis",
+          "Pneumonia",
+          "Bronchiolitis"
+        ],
+        "matrix": [
+          [
+            4,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            117,
+            0,
+            0,
+            1,
+            0
+          ],
+          [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            1,
+            0,
+            1,
+            0,
+            0
+          ],
+          [
+            1,
+            1,
+            0,
+            2,
+            0,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            2,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      }
+    }
+  }
+}

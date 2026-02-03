@@ -1,0 +1,148 @@
+{
+  "runs": [
+    {
+      "run_id": 1,
+      "conv_channels": "16-32",
+      "kernel_size": 3,
+      "dropout": 0.3,
+      "dense_units": 64,
+      "val_f1": 0.6051934287228404,
+      "test_f1": 0.5732731420804815
+    },
+    {
+      "run_id": 2,
+      "conv_channels": "16-32",
+      "kernel_size": 3,
+      "dropout": 0.3,
+      "dense_units": 128,
+      "val_f1": 0.6164187643020594,
+      "test_f1": 0.5732731420804815
+    },
+    {
+      "run_id": 3,
+      "conv_channels": "16-32",
+      "kernel_size": 3,
+      "dropout": 0.5,
+      "dense_units": 64,
+      "val_f1": 0.5981624537185172,
+      "test_f1": 0.6072601156069364
+    },
+    {
+      "run_id": 4,
+      "conv_channels": "16-32",
+      "kernel_size": 3,
+      "dropout": 0.5,
+      "dense_units": 128,
+      "val_f1": 0.6696529568797791,
+      "test_f1": 0.6240998119352323
+    },
+    {
+      "run_id": 5,
+      "conv_channels": "16-32",
+      "kernel_size": 5,
+      "dropout": 0.3,
+      "dense_units": 64,
+      "val_f1": 0.6166690937333139,
+      "test_f1": 0.5753734276729561
+    },
+    {
+      "run_id": 6,
+      "conv_channels": "16-32",
+      "kernel_size": 5,
+      "dropout": 0.3,
+      "dense_units": 128,
+      "val_f1": 0.6500897914076531,
+      "test_f1": 0.6130235632998065
+    },
+    {
+      "run_id": 7,
+      "conv_channels": "16-32",
+      "kernel_size": 5,
+      "dropout": 0.5,
+      "dense_units": 64,
+      "val_f1": 0.687203358890106,
+      "test_f1": 0.6173600410888547
+    },
+    {
+      "run_id": 8,
+      "conv_channels": "16-32",
+      "kernel_size": 5,
+      "dropout": 0.5,
+      "dense_units": 128,
+      "val_f1": 0.6497287522603978,
+      "test_f1": 0.6040268456375839
+    },
+    {
+      "run_id": 9,
+      "conv_channels": "16-32-64",
+      "kernel_size": 3,
+      "dropout": 0.3,
+      "dense_units": 64,
+      "val_f1": 0.7023461091753773,
+      "test_f1": 0.6130235632998065
+    },
+    {
+      "run_id": 10,
+      "conv_channels": "16-32-64",
+      "kernel_size": 3,
+      "dropout": 0.3,
+      "dense_units": 128,
+      "val_f1": 0.6696529568797792,
+      "test_f1": 0.6306062654947037
+    },
+    {
+      "run_id": 11,
+      "conv_channels": "16-32-64",
+      "kernel_size": 3,
+      "dropout": 0.5,
+      "dense_units": 64,
+      "val_f1": 0.7024328249818446,
+      "test_f1": 0.6043040293040294
+    },
+    {
+      "run_id": 12,
+      "conv_channels": "16-32-64",
+      "kernel_size": 3,
+      "dropout": 0.5,
+      "dense_units": 128,
+      "val_f1": 0.63625678119349,
+      "test_f1": 0.5971521268925739
+    },
+    {
+      "run_id": 13,
+      "conv_channels": "16-32-64",
+      "kernel_size": 5,
+      "dropout": 0.3,
+      "dense_units": 64,
+      "val_f1": 0.6331242740998839,
+      "test_f1": 0.5874861572535991
+    },
+    {
+      "run_id": 14,
+      "conv_channels": "16-32-64",
+      "kernel_size": 5,
+      "dropout": 0.3,
+      "dense_units": 128,
+      "val_f1": 0.6590389016018308,
+      "test_f1": 0.6051934287228404
+    },
+    {
+      "run_id": 15,
+      "conv_channels": "16-32-64",
+      "kernel_size": 5,
+      "dropout": 0.5,
+      "dense_units": 64,
+      "val_f1": 0.6439338235294118,
+      "test_f1": 0.6056042351223074
+    },
+    {
+      "run_id": 16,
+      "conv_channels": "16-32-64",
+      "kernel_size": 5,
+      "dropout": 0.5,
+      "dense_units": 128,
+      "val_f1": 0.6307494052339413,
+      "test_f1": 0.5677270908363345
+    }
+  ]
+}

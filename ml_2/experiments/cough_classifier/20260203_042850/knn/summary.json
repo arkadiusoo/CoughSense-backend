@@ -1,0 +1,436 @@
+{
+  "runs": [
+    {
+      "run_id": 1,
+      "neighbors": 3,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.5033566499225388,
+      "test_f1": 0.5796994219653179
+    },
+    {
+      "run_id": 2,
+      "neighbors": 3,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.46685499058380414,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 3,
+      "neighbors": 3,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.5033566499225388,
+      "test_f1": 0.5796994219653179
+    },
+    {
+      "run_id": 4,
+      "neighbors": 3,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.46685499058380414,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 5,
+      "neighbors": 3,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.46685499058380414,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 6,
+      "neighbors": 3,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.46685499058380414,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 7,
+      "neighbors": 3,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.46685499058380414,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 8,
+      "neighbors": 3,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.46685499058380414,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 9,
+      "neighbors": 3,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.5033566499225388,
+      "test_f1": 0.5796994219653179
+    },
+    {
+      "run_id": 10,
+      "neighbors": 3,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.5033566499225388,
+      "test_f1": 0.5796994219653179
+    },
+    {
+      "run_id": 11,
+      "neighbors": 3,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.5033566499225388,
+      "test_f1": 0.5796994219653179
+    },
+    {
+      "run_id": 12,
+      "neighbors": 3,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.5033566499225388,
+      "test_f1": 0.5796994219653179
+    },
+    {
+      "run_id": 13,
+      "neighbors": 5,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.5199607788205631,
+      "test_f1": 0.5285923407470369
+    },
+    {
+      "run_id": 14,
+      "neighbors": 5,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.5117041198501873,
+      "test_f1": 0.5539558089807555
+    },
+    {
+      "run_id": 15,
+      "neighbors": 5,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.5199607788205631,
+      "test_f1": 0.5229755178907721
+    },
+    {
+      "run_id": 16,
+      "neighbors": 5,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.5117041198501873,
+      "test_f1": 0.5539558089807555
+    },
+    {
+      "run_id": 17,
+      "neighbors": 5,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.5117041198501873,
+      "test_f1": 0.5539558089807555
+    },
+    {
+      "run_id": 18,
+      "neighbors": 5,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.5117041198501873,
+      "test_f1": 0.5539558089807555
+    },
+    {
+      "run_id": 19,
+      "neighbors": 5,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.5117041198501873,
+      "test_f1": 0.5539558089807555
+    },
+    {
+      "run_id": 20,
+      "neighbors": 5,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.5117041198501873,
+      "test_f1": 0.5539558089807555
+    },
+    {
+      "run_id": 21,
+      "neighbors": 5,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.5199607788205631,
+      "test_f1": 0.5285923407470369
+    },
+    {
+      "run_id": 22,
+      "neighbors": 5,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.5199607788205631,
+      "test_f1": 0.5285923407470369
+    },
+    {
+      "run_id": 23,
+      "neighbors": 5,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.5199607788205631,
+      "test_f1": 0.5229755178907721
+    },
+    {
+      "run_id": 24,
+      "neighbors": 5,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.5199607788205631,
+      "test_f1": 0.5229755178907721
+    },
+    {
+      "run_id": 25,
+      "neighbors": 7,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.5145204703215753,
+      "test_f1": 0.5370056497175141
+    },
+    {
+      "run_id": 26,
+      "neighbors": 7,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.49171539961013644,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 27,
+      "neighbors": 7,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.5145204703215753,
+      "test_f1": 0.5370056497175141
+    },
+    {
+      "run_id": 28,
+      "neighbors": 7,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.49171539961013644,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 29,
+      "neighbors": 7,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.49171539961013644,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 30,
+      "neighbors": 7,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.49171539961013644,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 31,
+      "neighbors": 7,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.49171539961013644,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 32,
+      "neighbors": 7,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.49171539961013644,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 33,
+      "neighbors": 7,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.5145204703215753,
+      "test_f1": 0.5370056497175141
+    },
+    {
+      "run_id": 34,
+      "neighbors": 7,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.5145204703215753,
+      "test_f1": 0.5370056497175141
+    },
+    {
+      "run_id": 35,
+      "neighbors": 7,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.5145204703215753,
+      "test_f1": 0.5370056497175141
+    },
+    {
+      "run_id": 36,
+      "neighbors": 7,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.5145204703215753,
+      "test_f1": 0.5370056497175141
+    },
+    {
+      "run_id": 37,
+      "neighbors": 9,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.524578034682081,
+      "test_f1": 0.5396067415730337
+    },
+    {
+      "run_id": 38,
+      "neighbors": 9,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.5334104157633569,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 39,
+      "neighbors": 9,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.524578034682081,
+      "test_f1": 0.5396067415730337
+    },
+    {
+      "run_id": 40,
+      "neighbors": 9,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.5334104157633569,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 41,
+      "neighbors": 9,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.5334104157633569,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 42,
+      "neighbors": 9,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.5334104157633569,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 43,
+      "neighbors": 9,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.5334104157633569,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 44,
+      "neighbors": 9,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.5334104157633569,
+      "test_f1": 0.5681159420289855
+    },
+    {
+      "run_id": 45,
+      "neighbors": 9,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 0.524578034682081,
+      "test_f1": 0.5396067415730337
+    },
+    {
+      "run_id": 46,
+      "neighbors": 9,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 0.524578034682081,
+      "test_f1": 0.5396067415730337
+    },
+    {
+      "run_id": 47,
+      "neighbors": 9,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 0.524578034682081,
+      "test_f1": 0.5396067415730337
+    },
+    {
+      "run_id": 48,
+      "neighbors": 9,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 0.524578034682081,
+      "test_f1": 0.5396067415730337
+    }
+  ]
+}

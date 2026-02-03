@@ -1,0 +1,117 @@
+{
+  "model": "cough_classifier",
+  "created_at": "2026-02-03T04:28:50.918546+00:00",
+  "dataset_config": {
+    "name": "cough_classifier",
+    "image_dir": "/Volumes/SSD500GB/1.ssd_files/dane_do_inzynierki/training_data/labeled_cough",
+    "features_dir": "/Volumes/SSD500GB/1.ssd_files/dane_do_inzynierki/training_data/labeled_cough",
+    "label_dir": null,
+    "label_key": "diagnosis",
+    "labels": null,
+    "image_extensions": [
+      ".png",
+      ".jpg",
+      ".jpeg"
+    ],
+    "features_suffix": ".features.json",
+    "label_suffix": ".json",
+    "features_key": "features",
+    "require_both_modalities": true
+  },
+  "label_map": [
+    "COVID-19",
+    "healthy_cough"
+  ],
+  "experiment_config": {
+    "training": {
+      "batch_size": 32,
+      "max_epochs": 40,
+      "learning_rate": 0.001,
+      "weight_decay": 0.0001,
+      "early_stopping_patience": 6,
+      "early_stopping_min_delta": 0.0,
+      "num_workers": 0,
+      "device": null,
+      "use_class_weights": true
+    },
+    "cnn_grid": {
+      "conv_channels_options": [
+        [
+          16,
+          32
+        ],
+        [
+          16,
+          32,
+          64
+        ]
+      ],
+      "kernel_sizes": [
+        3,
+        5
+      ],
+      "dropouts": [
+        0.3,
+        0.5
+      ],
+      "dense_units": [
+        64,
+        128
+      ],
+      "image_size": [
+        224,
+        224
+      ]
+    },
+    "knn_grid": {
+      "neighbors": [
+        3,
+        5,
+        7,
+        9
+      ],
+      "metrics": [
+        "minkowski",
+        "euclidean",
+        "manhattan"
+      ],
+      "weights": [
+        "distance",
+        "uniform"
+      ],
+      "p_values": [
+        1,
+        2
+      ]
+    },
+    "fusion": {
+      "weight_pairs": [
+        [
+          0.5,
+          0.5
+        ],
+        [
+          0.7,
+          0.3
+        ],
+        [
+          0.3,
+          0.7
+        ],
+        [
+          0.9,
+          0.1
+        ],
+        [
+          0.1,
+          0.9
+        ]
+      ]
+    },
+    "val_ratio": 0.15,
+    "test_ratio": 0.15,
+    "split_seed": 42,
+    "selection_metric": "f1_macro",
+    "selection_split": "val"
+  }
+}

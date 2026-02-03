@@ -1,0 +1,73 @@
+{
+  "model": "signal_type",
+  "run_dir": "ml_2/experiments/signal_type/20260202_225651",
+  "best": {
+    "model": "signal_type",
+    "cnn_run_id": 1,
+    "knn_run_id": 1,
+    "weights": {
+      "w_cnn": 0.5,
+      "w_knn": 0.5
+    },
+    "metrics": {
+      "val": {
+        "accuracy": 1.0,
+        "precision_macro": 1.0,
+        "recall_macro": 1.0,
+        "f1_macro": 1.0,
+        "precision_per_class": [
+          1.0,
+          1.0
+        ],
+        "recall_per_class": [
+          1.0,
+          1.0
+        ],
+        "f1_per_class": [
+          1.0,
+          1.0
+        ],
+        "confusion_matrix": [
+          [
+            258,
+            0
+          ],
+          [
+            0,
+            138
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 1.0,
+        "precision_macro": 1.0,
+        "recall_macro": 1.0,
+        "f1_macro": 1.0,
+        "precision_per_class": [
+          1.0,
+          1.0
+        ],
+        "recall_per_class": [
+          1.0,
+          1.0
+        ],
+        "f1_per_class": [
+          1.0,
+          1.0
+        ],
+        "confusion_matrix": [
+          [
+            258,
+            0
+          ],
+          [
+            0,
+            138
+          ]
+        ]
+      }
+    },
+    "cnn_checkpoint": "ml_2/results/signal_type/best_cnn.pt",
+    "knn_model": "ml_2/results/signal_type/best_knn.pkl"
+  }
+}

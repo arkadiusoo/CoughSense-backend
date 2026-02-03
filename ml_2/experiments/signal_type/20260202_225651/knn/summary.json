@@ -1,0 +1,436 @@
+{
+  "runs": [
+    {
+      "run_id": 1,
+      "neighbors": 3,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 2,
+      "neighbors": 3,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 3,
+      "neighbors": 3,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 4,
+      "neighbors": 3,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 5,
+      "neighbors": 3,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 6,
+      "neighbors": 3,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 7,
+      "neighbors": 3,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 8,
+      "neighbors": 3,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 9,
+      "neighbors": 3,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 10,
+      "neighbors": 3,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 11,
+      "neighbors": 3,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 12,
+      "neighbors": 3,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 13,
+      "neighbors": 5,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 14,
+      "neighbors": 5,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 15,
+      "neighbors": 5,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 16,
+      "neighbors": 5,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 17,
+      "neighbors": 5,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 18,
+      "neighbors": 5,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 19,
+      "neighbors": 5,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 20,
+      "neighbors": 5,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 21,
+      "neighbors": 5,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 22,
+      "neighbors": 5,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 23,
+      "neighbors": 5,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 24,
+      "neighbors": 5,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 25,
+      "neighbors": 7,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 26,
+      "neighbors": 7,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 27,
+      "neighbors": 7,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 28,
+      "neighbors": 7,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 29,
+      "neighbors": 7,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 30,
+      "neighbors": 7,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 31,
+      "neighbors": 7,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 32,
+      "neighbors": 7,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 33,
+      "neighbors": 7,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 34,
+      "neighbors": 7,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 35,
+      "neighbors": 7,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 36,
+      "neighbors": 7,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 37,
+      "neighbors": 9,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 38,
+      "neighbors": 9,
+      "metric": "minkowski",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 39,
+      "neighbors": 9,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 40,
+      "neighbors": 9,
+      "metric": "minkowski",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 41,
+      "neighbors": 9,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 42,
+      "neighbors": 9,
+      "metric": "euclidean",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 43,
+      "neighbors": 9,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 44,
+      "neighbors": 9,
+      "metric": "euclidean",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 45,
+      "neighbors": 9,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 46,
+      "neighbors": 9,
+      "metric": "manhattan",
+      "weights": "distance",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 47,
+      "neighbors": 9,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 1,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    },
+    {
+      "run_id": 48,
+      "neighbors": 9,
+      "metric": "manhattan",
+      "weights": "uniform",
+      "p_value": 2,
+      "val_f1": 1.0,
+      "test_f1": 0.9972147001934235
+    }
+  ]
+}

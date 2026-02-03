@@ -1,0 +1,80 @@
+{
+  "model": "cough_classifier",
+  "run_id": 39,
+  "config": {
+    "n_neighbors": 9,
+    "metric": "minkowski",
+    "weights": "uniform",
+    "p": 1
+  },
+  "metrics": {
+    "val": {
+      "accuracy": 0.5369127516778524,
+      "precision_macro": 0.5295698924731183,
+      "recall_macro": 0.5278985507246376,
+      "f1_macro": 0.524578034682081,
+      "per_class": {
+        "COVID-19": {
+          "precision": 0.5591397849462365,
+          "recall": 0.65,
+          "f1": 0.6011560693641619
+        },
+        "healthy_cough": {
+          "precision": 0.5,
+          "recall": 0.4057971014492754,
+          "f1": 0.448
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "COVID-19",
+          "healthy_cough"
+        ],
+        "matrix": [
+          [
+            52,
+            28
+          ],
+          [
+            41,
+            28
+          ]
+        ]
+      }
+    },
+    "test": {
+      "accuracy": 0.5570469798657718,
+      "precision_macro": 0.5504201680672269,
+      "recall_macro": 0.5456521739130434,
+      "f1_macro": 0.5396067415730337,
+      "per_class": {
+        "COVID-19": {
+          "precision": 0.5714285714285714,
+          "recall": 0.7,
+          "f1": 0.6292134831460674
+        },
+        "healthy_cough": {
+          "precision": 0.5294117647058824,
+          "recall": 0.391304347826087,
+          "f1": 0.45
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "COVID-19",
+          "healthy_cough"
+        ],
+        "matrix": [
+          [
+            56,
+            24
+          ],
+          [
+            42,
+            27
+          ]
+        ]
+      }
+    }
+  }
+}

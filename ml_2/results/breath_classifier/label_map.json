@@ -1,0 +1,12 @@
+{
+  "labels": [
+    "Healthy",
+    "URTI",
+    "Asthma",
+    "COPD",
+    "LRTI",
+    "Bronchiectasis",
+    "Pneumonia",
+    "Bronchiolitis"
+  ]
+}

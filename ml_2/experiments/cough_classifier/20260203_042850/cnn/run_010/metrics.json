@@ -1,0 +1,95 @@
+{
+  "model": "cough_classifier",
+  "run_id": 10,
+  "config": {
+    "input_channels": 3,
+    "num_classes": 2,
+    "conv_channels": [
+      16,
+      32,
+      64
+    ],
+    "kernel_size": 3,
+    "dropout": 0.3,
+    "dense_units": 128,
+    "pool_kernel": 2,
+    "image_size": [
+      224,
+      224
+    ]
+  },
+  "early_stopping": {
+    "best_epoch": 32,
+    "best_val_loss": 0.5968817964496228
+  },
+  "metrics": {
+    "val": {
+      "accuracy": 0.6711409395973155,
+      "precision_macro": 0.6869114877589454,
+      "recall_macro": 0.6798007246376812,
+      "f1_macro": 0.6696529568797792,
+      "per_class": {
+        "COVID-19": {
+          "precision": 0.7627118644067796,
+          "recall": 0.5625,
+          "f1": 0.6474820143884892
+        },
+        "healthy_cough": {
+          "precision": 0.6111111111111112,
+          "recall": 0.7971014492753623,
+          "f1": 0.6918238993710693
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "COVID-19",
+          "healthy_cough"
+        ],
+        "matrix": [
+          [
+            45,
+            35
+          ],
+          [
+            14,
+            55
+          ]
+        ]
+      }
+    },
+    "test": {
+      "accuracy": 0.6308724832214765,
+      "precision_macro": 0.6378205128205128,
+      "recall_macro": 0.636322463768116,
+      "f1_macro": 0.6306062654947037,
+      "per_class": {
+        "COVID-19": {
+          "precision": 0.6923076923076923,
+          "recall": 0.5625,
+          "f1": 0.6206896551724138
+        },
+        "healthy_cough": {
+          "precision": 0.5833333333333334,
+          "recall": 0.7101449275362319,
+          "f1": 0.6405228758169935
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "COVID-19",
+          "healthy_cough"
+        ],
+        "matrix": [
+          [
+            45,
+            35
+          ],
+          [
+            20,
+            49
+          ]
+        ]
+      }
+    }
+  }
+}

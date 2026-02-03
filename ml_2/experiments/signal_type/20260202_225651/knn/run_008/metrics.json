@@ -1,0 +1,80 @@
+{
+  "model": "signal_type",
+  "run_id": 8,
+  "config": {
+    "n_neighbors": 3,
+    "metric": "euclidean",
+    "weights": "uniform",
+    "p": 2
+  },
+  "metrics": {
+    "val": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "f1_macro": 1.0,
+      "per_class": {
+        "cough": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "breath": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "cough",
+          "breath"
+        ],
+        "matrix": [
+          [
+            258,
+            0
+          ],
+          [
+            0,
+            138
+          ]
+        ]
+      }
+    },
+    "test": {
+      "accuracy": 0.9974747474747475,
+      "precision_macro": 0.9980694980694981,
+      "recall_macro": 0.9963768115942029,
+      "f1_macro": 0.9972147001934235,
+      "per_class": {
+        "cough": {
+          "precision": 0.9961389961389961,
+          "recall": 1.0,
+          "f1": 0.9980657640232108
+        },
+        "breath": {
+          "precision": 1.0,
+          "recall": 0.9927536231884058,
+          "f1": 0.9963636363636363
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "cough",
+          "breath"
+        ],
+        "matrix": [
+          [
+            258,
+            0
+          ],
+          [
+            1,
+            137
+          ]
+        ]
+      }
+    }
+  }
+}

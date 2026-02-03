@@ -1,0 +1,73 @@
+{
+  "model": "cough_classifier",
+  "run_dir": "ml_2/experiments/cough_classifier/20260203_042850",
+  "best": {
+    "model": "cough_classifier",
+    "cnn_run_id": 11,
+    "knn_run_id": 38,
+    "weights": {
+      "w_cnn": 0.9,
+      "w_knn": 0.1
+    },
+    "metrics": {
+      "val": {
+        "accuracy": 0.7114093959731543,
+        "precision_macro": 0.7103860294117648,
+        "recall_macro": 0.7073369565217391,
+        "f1_macro": 0.7080428343586238,
+        "precision_per_class": [
+          0.7176470588235294,
+          0.703125
+        ],
+        "recall_per_class": [
+          0.7625,
+          0.6521739130434783
+        ],
+        "f1_per_class": [
+          0.7393939393939394,
+          0.6766917293233083
+        ],
+        "confusion_matrix": [
+          [
+            61,
+            19
+          ],
+          [
+            24,
+            45
+          ]
+        ]
+      },
+      "test": {
+        "accuracy": 0.6174496644295302,
+        "precision_macro": 0.6146067415730336,
+        "recall_macro": 0.6108695652173912,
+        "f1_macro": 0.6104307141874226,
+        "precision_per_class": [
+          0.6292134831460674,
+          0.6
+        ],
+        "recall_per_class": [
+          0.7,
+          0.5217391304347826
+        ],
+        "f1_per_class": [
+          0.6627218934911242,
+          0.5581395348837209
+        ],
+        "confusion_matrix": [
+          [
+            56,
+            24
+          ],
+          [
+            33,
+            36
+          ]
+        ]
+      }
+    },
+    "cnn_checkpoint": "ml_2/results/cough_classifier/best_cnn.pt",
+    "knn_model": "ml_2/results/cough_classifier/best_knn.pkl"
+  }
+}

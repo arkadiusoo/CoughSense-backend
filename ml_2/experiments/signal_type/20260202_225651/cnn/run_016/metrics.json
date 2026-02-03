@@ -1,0 +1,95 @@
+{
+  "model": "signal_type",
+  "run_id": 16,
+  "config": {
+    "input_channels": 3,
+    "num_classes": 2,
+    "conv_channels": [
+      16,
+      32,
+      64
+    ],
+    "kernel_size": 5,
+    "dropout": 0.5,
+    "dense_units": 128,
+    "pool_kernel": 2,
+    "image_size": [
+      224,
+      224
+    ]
+  },
+  "early_stopping": {
+    "best_epoch": 16,
+    "best_val_loss": 0.00013559132758294282
+  },
+  "metrics": {
+    "val": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "f1_macro": 1.0,
+      "per_class": {
+        "cough": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "breath": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "cough",
+          "breath"
+        ],
+        "matrix": [
+          [
+            258,
+            0
+          ],
+          [
+            0,
+            138
+          ]
+        ]
+      }
+    },
+    "test": {
+      "accuracy": 1.0,
+      "precision_macro": 1.0,
+      "recall_macro": 1.0,
+      "f1_macro": 1.0,
+      "per_class": {
+        "cough": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "breath": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        }
+      },
+      "confusion_matrix": {
+        "labels": [
+          "cough",
+          "breath"
+        ],
+        "matrix": [
+          [
+            258,
+            0
+          ],
+          [
+            0,
+            138
+          ]
+        ]
+      }
+    }
+  }
+}
