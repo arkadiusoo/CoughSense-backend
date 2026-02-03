@@ -11,3 +11,4 @@ python-multipart
 pytest
 scikit-learn
 pillow
+matplotlib
