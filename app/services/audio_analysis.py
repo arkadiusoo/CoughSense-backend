@@ -1,6 +1,8 @@
 import time
 from pathlib import Path
 import logging
+from datetime import datetime, timezone
+import json
 
 from fastapi import HTTPException, UploadFile, status
 
@@ -14,7 +16,12 @@ from app.audio.spectrogram import (
 from app.audio.validation import validate_duration, validate_format
 from app.db.repository import AnalysisRepository
 from app.ml.model import CoughClassifier
-from app.ifDev import IF_DEV, DEV_SPECTROGRAM_DIR
+from app.ifDev import (
+    DEV_SPECTROGRAM_DIR,
+    DEV_SUBMODEL_LOG_DIR,
+    IF_DEV,
+    SAVE_SUBMODEL_LOGS,
+)
 from ml_2.model import CoughSenseModel_2_0, Prediction as HybridPrediction
 
 
@@ -125,6 +132,12 @@ def _predict_hybrid(
     wav_bytes: bytes,
     features,
 ) -> HybridPrediction:
+    debug_payload: dict = {
+        "model_name": model.model_name,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "submodels": {},
+    }
+
     # Stage 1: generate spectrogram for signal_type model (20s, as in training script).
     signal_image = generate_spectrogram_image_from_wav_bytes(
         wav_bytes=wav_bytes,
@@ -132,31 +145,63 @@ def _predict_hybrid(
     )
     _save_spectrogram_if_dev(signal_image, prefix="signal_type")
 
-    signal_prediction = model.signal_type_model.predict(signal_image, features)
+    signal_prediction, signal_details = model.signal_type_model.predict_with_details(
+        signal_image, features
+    )
+    debug_payload["submodels"]["signal_type"] = signal_details
+
     if (
         signal_prediction.confidence is None
         or signal_prediction.confidence < model.min_signal_confidence
     ):
+        debug_payload["final_prediction"] = {
+            "label": "reject",
+            "confidence": signal_prediction.confidence,
+            "reason": "signal_type_confidence_below_threshold",
+        }
+        _save_submodel_debug_if_dev(debug_payload)
         return HybridPrediction(label="reject", confidence=signal_prediction.confidence)
 
     if signal_prediction.label == "cough":
-        # Stage 2a: if cough, generate cough spectrogram (10s, as in training script).
-        cough_image = generate_spectrogram_image_from_wav_bytes(
+        cough_prediction, cough_details = _evaluate_secondary_submodel(
+            model=model.cough_model,
             wav_bytes=wav_bytes,
+            features=features,
             target_duration_seconds=COUGH_DURATION_SECONDS,
+            prefix="cough",
         )
-        _save_spectrogram_if_dev(cough_image, prefix="cough")
-        return model.cough_model.predict(cough_image, features)
+        debug_payload["submodels"]["cough_classifier"] = cough_details
+        debug_payload["final_prediction"] = {
+            "label": cough_prediction.label,
+            "confidence": cough_prediction.confidence,
+            "path": "signal_type->cough_classifier",
+        }
+        _save_submodel_debug_if_dev(debug_payload)
+        return cough_prediction
 
     if signal_prediction.label == "breath":
-        # Stage 2b: if breath, generate breath spectrogram (20s, as in training script).
-        breath_image = generate_spectrogram_image_from_wav_bytes(
+        breath_prediction, breath_details = _evaluate_secondary_submodel(
+            model=model.breath_model,
             wav_bytes=wav_bytes,
+            features=features,
             target_duration_seconds=BREATH_DURATION_SECONDS,
+            prefix="breath",
         )
-        _save_spectrogram_if_dev(breath_image, prefix="breath")
-        return model.breath_model.predict(breath_image, features)
+        debug_payload["submodels"]["breath_classifier"] = breath_details
+        debug_payload["final_prediction"] = {
+            "label": breath_prediction.label,
+            "confidence": breath_prediction.confidence,
+            "path": "signal_type->breath_classifier",
+        }
+        _save_submodel_debug_if_dev(debug_payload)
+        return breath_prediction
 
+    debug_payload["final_prediction"] = {
+        "label": "reject",
+        "confidence": signal_prediction.confidence,
+        "reason": "unknown_signal_type_label",
+    }
+    _save_submodel_debug_if_dev(debug_payload)
     return HybridPrediction(label="reject", confidence=signal_prediction.confidence)
 
 
@@ -165,6 +210,33 @@ def _save_spectrogram_if_dev(image, prefix: str) -> None:
         return
     path = save_debug_spectrogram(image, DEV_SPECTROGRAM_DIR, prefix)
     logger.info("Saved debug spectrogram: %s", path)
+
+
+def _evaluate_secondary_submodel(
+    model,
+    wav_bytes: bytes,
+    features,
+    target_duration_seconds: float,
+    prefix: str,
+) -> tuple[HybridPrediction, dict]:
+    image = generate_spectrogram_image_from_wav_bytes(
+        wav_bytes=wav_bytes,
+        target_duration_seconds=target_duration_seconds,
+    )
+    _save_spectrogram_if_dev(image, prefix=prefix)
+    return model.predict_with_details(image, features)
+
+
+def _save_submodel_debug_if_dev(payload: dict) -> None:
+    if not IF_DEV or not SAVE_SUBMODEL_LOGS:
+        return
+
+    DEV_SUBMODEL_LOG_DIR.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
+    output_path = DEV_SUBMODEL_LOG_DIR / f"submodel_debug_{timestamp}.json"
+    with output_path.open("w", encoding="utf-8") as handle:
+        json.dump(payload, handle, indent=2)
+    logger.info("Saved submodel debug output: %s", output_path)
 
 
 classifier = _load_classifier()

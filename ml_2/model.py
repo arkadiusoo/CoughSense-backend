@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from dataclasses import asdict
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
@@ -100,13 +101,7 @@ class HybridSubmodel:
         image: Image.Image | Path,
         features: np.ndarray,
     ) -> np.ndarray:
-        cnn_probs = self.cnn.predict_proba(image)
-        knn_probs = self.knn.predict_proba(features)
-        fused = fuse_probabilities(
-            cnn_probs.reshape(1, -1),
-            knn_probs.reshape(1, -1),
-            self.fusion_weights,
-        )[0]
+        _, _, fused = self._compute_module_probabilities(image, features)
         return fused
 
     def predict(
@@ -114,9 +109,71 @@ class HybridSubmodel:
         image: Image.Image | Path,
         features: np.ndarray,
     ) -> Prediction:
-        probs = self.predict_proba(image, features)
+        _, _, probs = self._compute_module_probabilities(image, features)
         best_idx = int(np.argmax(probs))
         return Prediction(label=self.label_map[best_idx], confidence=float(probs[best_idx]))
+
+    def predict_with_details(
+        self,
+        image: Image.Image | Path,
+        features: np.ndarray,
+    ) -> tuple[Prediction, dict]:
+        cnn_probs, knn_probs, fused_probs = self._compute_module_probabilities(
+            image, features
+        )
+        best_idx = int(np.argmax(fused_probs))
+        prediction = Prediction(
+            label=self.label_map[best_idx],
+            confidence=float(fused_probs[best_idx]),
+        )
+
+        normalized_weights = self.fusion_weights.normalized()
+        payload = {
+            "prediction": {
+                "label": prediction.label,
+                "confidence": prediction.confidence,
+            },
+            "cnn": {
+                "config": {
+                    **asdict(self.cnn.config),
+                    "image_size": list(self.cnn.image_size),
+                },
+                "probabilities": cnn_probs.tolist(),
+                "label_map": self.label_map,
+            },
+            "knn": {
+                "config": asdict(self.knn.config),
+                "probabilities": knn_probs.tolist(),
+                "label_map": self.label_map,
+            },
+            "fusion": {
+                "weights": {
+                    "w_cnn": self.fusion_weights.w_cnn,
+                    "w_knn": self.fusion_weights.w_knn,
+                },
+                "normalized_weights": {
+                    "w_cnn": normalized_weights.w_cnn,
+                    "w_knn": normalized_weights.w_knn,
+                },
+                "probabilities": fused_probs.tolist(),
+                "label_map": self.label_map,
+            },
+        }
+        return prediction, payload
+
+    def _compute_module_probabilities(
+        self,
+        image: Image.Image | Path,
+        features: np.ndarray,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        cnn_probs = self.cnn.predict_proba(image)
+        knn_probs = self.knn.predict_proba(features)
+        fused = fuse_probabilities(
+            cnn_probs.reshape(1, -1),
+            knn_probs.reshape(1, -1),
+            self.fusion_weights,
+        )[0]
+        return cnn_probs, knn_probs, fused
 
 
 class CoughSenseModel_2_0:
