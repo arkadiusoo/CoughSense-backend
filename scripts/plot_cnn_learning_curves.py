@@ -61,7 +61,9 @@ def main() -> None:
             print(f"[{model_name}] No runs found in {args.experiments_root / model_name}")
             continue
 
-        history_path = run_dir / "cnn" / f"run_{cnn_run_id:03d}" / "history.json"
+        cnn_run_dir = run_dir / "cnn" / f"run_{cnn_run_id:03d}"
+        history_path = cnn_run_dir / "history.json"
+        metrics_path = cnn_run_dir / "metrics.json"
         if not history_path.exists():
             print(f"[{model_name}] Missing history.json: {history_path}")
             continue
@@ -71,7 +73,23 @@ def main() -> None:
             print(f"[{model_name}] Empty history in {history_path}")
             continue
 
-        _plot_history(model_name, history, args.output_dir)
+        config_text = _load_cnn_config(metrics_path)
+        _plot_history(model_name, history, args.output_dir, config_text)
+
+        all_history = _collect_all_histories(run_dir / "cnn")
+        if all_history:
+            averaged = _average_histories(all_history)
+            all_dir = args.output_dir / "all_configurations"
+            all_dir.mkdir(parents=True, exist_ok=True)
+            _plot_history(
+                model_name,
+                averaged,
+                all_dir,
+                config_text="All CNN configurations (mean per epoch)",
+                suffix="all_configs",
+            )
+        else:
+            print(f"[{model_name}] No histories found for all-config plot.")
 
 
 def _find_latest_run_dir(root: Path) -> Path | None:
@@ -83,7 +101,13 @@ def _find_latest_run_dir(root: Path) -> Path | None:
     return run_dirs[-1]
 
 
-def _plot_history(model_name: str, history: list[dict], output_dir: Path) -> None:
+def _plot_history(
+    model_name: str,
+    history: list[dict],
+    output_dir: Path,
+    config_text: str,
+    suffix: str = "best",
+) -> None:
     epochs = [item.get("epoch") for item in history]
     train_loss = [item.get("train_loss") for item in history]
     val_loss = [item.get("val_loss") for item in history]
@@ -96,6 +120,7 @@ def _plot_history(model_name: str, history: list[dict], output_dir: Path) -> Non
     axes[0].set_title(f"{model_name} - Loss")
     axes[0].set_xlabel("Epoch")
     axes[0].set_ylabel("Loss")
+    axes[0].grid(True, linestyle="--", alpha=0.4)
     axes[0].legend()
 
     axes[1].plot(epochs, train_acc, label="train_accuracy")
@@ -103,13 +128,72 @@ def _plot_history(model_name: str, history: list[dict], output_dir: Path) -> Non
     axes[1].set_title(f"{model_name} - Accuracy")
     axes[1].set_xlabel("Epoch")
     axes[1].set_ylabel("Accuracy")
+    axes[1].grid(True, linestyle="--", alpha=0.4)
     axes[1].legend()
 
-    fig.tight_layout()
-    output_path = output_dir / f"{model_name}_learning_curve.png"
+    fig.suptitle(config_text, fontsize=9)
+    fig.tight_layout(rect=[0, 0, 1, 0.92])
+    output_path = output_dir / f"{model_name}_learning_curve_{suffix}.png"
     fig.savefig(output_path, dpi=150)
     plt.close(fig)
     print(f"[{model_name}] Saved: {output_path}")
+
+
+def _load_cnn_config(metrics_path: Path) -> str:
+    if not metrics_path.exists():
+        return "CNN config: unavailable"
+    payload = json.loads(metrics_path.read_text())
+    cfg = payload.get("config", {})
+    conv = cfg.get("conv_channels")
+    kernel = cfg.get("kernel_size")
+    dropout = cfg.get("dropout")
+    dense = cfg.get("dense_units")
+    return (
+        f"CNN config: conv_channels={conv}, kernel={kernel}, "
+        f"dropout={dropout}, dense_units={dense}"
+    )
+
+
+def _collect_all_histories(cnn_dir: Path) -> list[list[dict]]:
+    if not cnn_dir.exists():
+        return []
+    histories: list[list[dict]] = []
+    for run_dir in sorted([p for p in cnn_dir.iterdir() if p.is_dir()]):
+        history_path = run_dir / "history.json"
+        if not history_path.exists():
+            continue
+        payload = json.loads(history_path.read_text()).get("history", [])
+        if payload:
+            histories.append(payload)
+    return histories
+
+
+def _average_histories(histories: list[list[dict]]) -> list[dict]:
+    if not histories:
+        return []
+    max_epoch = max(len(h) for h in histories)
+    result: list[dict] = []
+    for idx in range(max_epoch):
+        bucket = [h[idx] for h in histories if idx < len(h)]
+        if not bucket:
+            continue
+        result.append(
+            {
+                "epoch": int(bucket[0]["epoch"]),
+                "train_loss": _mean(bucket, "train_loss"),
+                "val_loss": _mean(bucket, "val_loss"),
+                "train_accuracy": _mean(bucket, "train_accuracy"),
+                "val_accuracy": _mean(bucket, "val_accuracy"),
+            }
+        )
+    return result
+
+
+def _mean(rows: list[dict], key: str) -> float:
+    values = [row[key] for row in rows if row.get(key) is not None]
+    if not values:
+        return 0.0
+    return sum(values) / len(values)
 
 
 if __name__ == "__main__":
