@@ -40,3 +40,8 @@ checkpoints/
 *.pt
 *.pth
 
+# ignore data files
+data/*
+
+# but keep learning curves
+!data/learning_curves/
