@@ -56,6 +56,20 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Display plots interactively in addition to saving.",
     )
+    parser.add_argument(
+        "--positive-label",
+        type=str,
+        default=None,
+        # help=(
+        #     "Positive class label for TP/FP/FN/TN annotations in binary matrices. "
+        #     "If omitted, the first label is used."
+        # ),
+    )
+    parser.add_argument(
+        "--no-binary-tags",
+        action="store_true",
+        help="Disable TP/FP/FN/TN annotations for binary matrices.",
+    )
     return parser.parse_args()
 
 
@@ -93,13 +107,19 @@ def render_matrix(
     output_path: Path,
     split: str,
     dpi: int,
+    positive_label: str | None,
+    show_binary_tags: bool,
 ) -> None:
     fig, ax = plt.subplots(figsize=figure_size(len(labels)))
     image = ax.imshow(matrix, cmap="Reds", interpolation="nearest")
 
     ax.set_title(f"{title} ({split})", fontsize=13, fontweight="bold")
-    ax.set_xlabel("Actual value", fontsize=11)
-    ax.set_ylabel("Predicted value", fontsize=11)
+    if len(labels) > 2:
+        ax.set_xlabel("Actual value", fontsize=11)
+        ax.set_ylabel("Predicted value", fontsize=11)
+    else:
+        ax.set_xlabel("")
+        ax.set_ylabel("")
 
     indices = np.arange(len(labels))
     ax.set_xticks(indices)
@@ -110,14 +130,32 @@ def render_matrix(
     max_value = matrix.max() if matrix.size else 0
     threshold = max_value / 2 if max_value > 0 else 0
 
+    is_binary = matrix.shape == (2, 2)
+    tag_map: dict[tuple[int, int], str] = {}
+    chosen_positive: str | None = None
+    if is_binary and show_binary_tags:
+        if positive_label is not None and positive_label in labels:
+            chosen_positive = positive_label
+        else:
+            chosen_positive = labels[0]
+        pos_idx = labels.index(chosen_positive)
+        neg_idx = 1 - pos_idx
+        tag_map = {
+            (pos_idx, pos_idx): "TP",
+            (pos_idx, neg_idx): "FP",
+            (neg_idx, pos_idx): "FN",
+            (neg_idx, neg_idx): "TN",
+        }
+
     for row in range(matrix.shape[0]):
         for col in range(matrix.shape[1]):
             value = int(matrix[row, col])
             color = "white" if value > threshold else "black"
-            ax.text(col, row, str(value), ha="center", va="center", color=color, fontsize=10)
-
-    cbar = fig.colorbar(image, ax=ax, fraction=0.046, pad=0.04)
-    cbar.ax.set_ylabel("Samples", rotation=90)
+            if (row, col) in tag_map:
+                text = f"{tag_map[(row, col)]}\n{value}"
+                ax.text(col, row, text, ha="center", va="center", color=color, fontsize=11, fontweight="bold")
+            else:
+                ax.text(col, row, str(value), ha="center", va="center", color=color, fontsize=10)
 
     fig.tight_layout()
     fig.savefig(output_path, dpi=dpi)
@@ -143,6 +181,8 @@ def main() -> None:
             output_path=output_path,
             split=args.split,
             dpi=args.dpi,
+            positive_label=args.positive_label,
+            show_binary_tags=not args.no_binary_tags,
         )
         generated.append(output_path)
         print(f"[OK] {output_path}")
